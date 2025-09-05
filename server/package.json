@@ -17,8 +17,14 @@
   },
   "homepage": "https://github.com/ElieHatoum/MyContacts#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "mongodb": "^6.19.0"
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.19.0",
+    "mongoose": "^8.18.0",
+    "uuid": "^11.1.0",
+    "validatorjs": "^3.22.1"
   }
 }

@@ -1,0 +1,36 @@
+const Validator = require("validatorjs");
+
+const validateRule = {
+    email: "required|email",
+    password: "required|string|min:6",
+};
+
+const registerValidation = async (req, res, next) => {
+    let validation = new Validator(req.body, validateRule);
+    if (!validation.passes()) {
+        return res.status(412).send({
+            success: false,
+            message: "Validation failed",
+            data: validation.errors,
+        });
+    }
+    next();
+};
+
+const loginValidation = async (req, res, next) => {
+    let validation = new Validator(req.body, validateRule);
+
+    if (!validation.passes()) {
+        return res.status(412).send({
+            success: false,
+            message: "Validation failed",
+            data: validation.errors,
+        });
+    }
+    next();
+};
+
+module.exports = {
+    registerValidation,
+    loginValidation,
+};
