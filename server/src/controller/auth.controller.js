@@ -20,31 +20,26 @@ const register = asyncHandler(async (req, res) => {
             return res.status(403).json({
                 message: "email already used",
             });
-        }
-        //generating id
-        const userId = uuidv4();
-        //hashing password
-        bcrypt.hash(password, 10).then((hash) => {
+        } else {
+            //generating id
+            const userId = uuidv4();
+
+            //hashing password
+            const hashedPassword = await bcrypt.hash(password, 10);
+
             const user = new userModel({
                 userId: userId,
                 email: email,
-                password: hash,
+                password: hashedPassword,
             });
 
-            user.save()
-                .then((response) => {
-                    return res.status(201).json({
-                        message: "user successfully created !",
-                        result: response,
-                        success: true,
-                    });
-                })
-                .catch((error) => {
-                    return res.status(500).json({
-                        error: error,
-                    });
-                });
-        });
+            const savedUser = await user.save();
+            return res.status(201).json({
+                message: "user successfully created !",
+                result: savedUser,
+                success: true,
+            });
+        }
     } catch {
         return res.status(412).send({
             success: false,
@@ -59,51 +54,46 @@ const login = asyncHandler(async (req, res) => {
     let getUser;
 
     //verifying that the user with the email exists
-    userModel
-        .findOne({
-            email: email,
-        })
-        .then((user) => {
-            if (!user) {
-                //user does not exist
-                return res.status(401).json({
-                    message: "Authentication Failed",
-                });
-            }
+    const userExists = await userModel.findOne({ email: email });
 
-            getUser = user;
-
-            return bcrypt.compare(password, user.password);
-        })
-        .then((response) => {
-            if (!response) {
-                return res.status(401).json({
-                    message: "Authentication Failed",
-                });
-            } else {
-                let jwtToken = jwt.sign(
-                    {
-                        email: getUser.email,
-                        userId: getUser.userId,
-                    },
-                    process.env.JWT_SECRET,
-                    {
-                        expiresIn: "1h",
-                    }
-                );
-                return res.status(200).json({
-                    accessToken: jwtToken,
-                    //keeping id to fetch contacts
-                    userId: getUser.userId,
-                });
-            }
-        })
-        .catch((err) => {
+    try {
+        if (!userExists) {
             return res.status(401).json({
-                messgae: err.message,
-                success: false,
+                message: "Authentication Failed",
             });
+        }
+        getUser = userExists;
+        const passwordMatched = await bcrypt.compare(
+            password,
+            userExists.password
+        );
+
+        if (!passwordMatched) {
+            return res.status(401).json({
+                message: "Authentication Failed",
+            });
+        }
+        let jwtToken = jwt.sign(
+            {
+                email: getUser.email,
+                userId: getUser.userId,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1h",
+            }
+        );
+        return res.status(200).json({
+            accessToken: jwtToken,
+            //keeping id to fetch contacts
+            userId: getUser.userId,
         });
+    } catch (error) {
+        return res.status(401).json({
+            message: error.message,
+            success: false,
+        });
+    }
 });
 
 const home = asyncHandler(async (req, res, next) => {
