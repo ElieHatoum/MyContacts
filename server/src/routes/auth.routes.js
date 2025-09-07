@@ -7,18 +7,7 @@ const {
     loginValidation,
 } = require("../middleware/authvalidation.middleware");
 
-const { login, register, home } = require("../controller/auth.controller");
-
-/**
- * @swagger
- * components:
- *   securitySchemes:
- *     bearerAuth:
- *       type: http
- *       scheme: bearer
- *       bearerFormat: JWT
- */
-const verifyToken = require("../middleware/auth.middleware");
+const { login, register } = require("../controller/auth.controller");
 
 /**
  * @swagger
@@ -29,7 +18,7 @@ const verifyToken = require("../middleware/auth.middleware");
 
 /**
  * @swagger
- * /register:
+ * /api/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -76,7 +65,7 @@ router.post("/register", registerValidation, register);
 
 /**
  * @swagger
- * /login:
+ * /api/auth/login:
  *   post:
  *     summary: Authenticate a user and get a JWT token
  *     tags: [Auth]
@@ -117,41 +106,5 @@ router.post("/register", registerValidation, register);
  */
 
 router.post("/login", loginValidation, login);
-
-/**
- * @swagger
- * /home/{id}:
- *   get:
- *     summary: Get user info by ID (protected route)
- *     tags: [Auth]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: User ID
- *         schema:
- *           type: string
- *           example: "b23a8c3c-27c5-4d54-bf79-b302ef6d30d7"
- *     responses:
- *       200:
- *         description: Returns user info
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "user user@example.com"
- *                 success:
- *                   type: boolean
- *       401:
- *         description: Unauthorized, invalid token
- *       403:
- *         description: User not found
- */
-router.get("/home/:id", verifyToken, home);
 
 module.exports = router;
