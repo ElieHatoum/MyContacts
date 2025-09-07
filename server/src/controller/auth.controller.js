@@ -1,5 +1,3 @@
-const express = require("express");
-
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs");
@@ -96,28 +94,4 @@ const login = asyncHandler(async (req, res) => {
     }
 });
 
-const home = asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
-
-    try {
-        const verifyUser = await userModel.findOne({ userId: id });
-        if (!verifyUser) {
-            return res.status(403).json({
-                message: "user not found",
-                success: false,
-            });
-        } else {
-            return res.status(200).json({
-                message: `user ${verifyUser.email}`,
-                success: true,
-            });
-        }
-    } catch (error) {
-        return res.status(401).json({
-            sucess: false,
-            message: error.message,
-        });
-    }
-});
-
-module.exports = { register, login, home };
+module.exports = { register, login };
