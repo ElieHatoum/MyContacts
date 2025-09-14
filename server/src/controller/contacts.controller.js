@@ -1,10 +1,10 @@
 const userModel = require("../models/user.model");
 const contactModel = require("../models/contacts.model");
-const { v4: uuidv4 } = require("uuid");
 const asyncHandler = require("express-async-handler");
 
 const getUser = async (userId) => {
-    const user = await userModel.findOne({ userId: userId });
+    // const user = await userModel.findOne({ id: userId });
+    const user = await userModel.findById(userId);
 
     return user;
 };
@@ -49,9 +49,8 @@ const createContact = asyncHandler(async (req, res) => {
                 success: false,
             });
         }
-        const contactId = uuidv4();
+
         const contact = new contactModel({
-            contactId: contactId,
             userId: userId,
             firstName: firstName,
             lastName: lastName,
@@ -73,7 +72,7 @@ const createContact = asyncHandler(async (req, res) => {
 });
 
 const deleteContact = asyncHandler(async (req, res) => {
-    const userId = req.userData.userId;
+    const { userId } = req.userData;
     const contactId = req.params.contactId;
     try {
         const user = await getUser(userId);
@@ -84,10 +83,7 @@ const deleteContact = asyncHandler(async (req, res) => {
             });
         }
 
-        const contact = await contactModel.findOneAndDelete({
-            contactId: contactId,
-            userId: userId,
-        });
+        const contact = await contactModel.findByIdAndDelete(contactId);
 
         if (!contact) {
             return res.status(403).json({
@@ -109,7 +105,7 @@ const deleteContact = asyncHandler(async (req, res) => {
 });
 
 const updateContact = asyncHandler(async (req, res) => {
-    const userId = req.userData.userId;
+    const { userId } = req.userData;
     const contactId = req.params.contactId;
 
     try {
@@ -121,8 +117,8 @@ const updateContact = asyncHandler(async (req, res) => {
             });
         }
 
-        const updatedContact = await contactModel.findOneAndUpdate(
-            { contactId: contactId },
+        const updatedContact = await contactModel.findByIdAndUpdate(
+            contactId,
             req.body
         );
         if (!updatedContact) {
