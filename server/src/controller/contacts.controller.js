@@ -9,7 +9,7 @@ const getUser = async (userId) => {
     return user;
 };
 
-const allContacts = asyncHandler(async (req, res) => {
+const getContacts = asyncHandler(async (req, res) => {
     const { userId } = req.userData;
 
     try {
@@ -144,4 +144,4 @@ const updateContact = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { allContacts, createContact, deleteContact, updateContact };
+module.exports = { getContacts, createContact, deleteContact, updateContact };

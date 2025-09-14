@@ -7,10 +7,24 @@ const options = {
         info: {
             title: "Swagger Express API",
             version: "1.0.0",
-            description: "MyContacts Express API with Swagger documentation",
+            description: "A simple Express API with Swagger documentation",
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                },
+            },
+        },
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
     },
-    apis: ["./src/routes/auth.routes.js"],
+    apis: ["./src/routes/auth.routes.js", "./src/routes/contacts.routes.js"],
 };
 
 const specs = swaggerJsdoc(options);
