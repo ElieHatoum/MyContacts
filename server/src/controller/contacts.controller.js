@@ -91,13 +91,13 @@ const deleteContact = asyncHandler(async (req, res) => {
 
         if (!contact) {
             return res.status(403).json({
-                message: "Contact not found",
+                message: "contact not found",
                 success: false,
             });
         }
 
         return res.status(200).json({
-            message: "Contact deleted.",
+            message: "contact deleted.",
             success: true,
         });
     } catch (error) {
@@ -108,4 +108,40 @@ const deleteContact = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { allContacts, createContact, deleteContact };
+const updateContact = asyncHandler(async (req, res) => {
+    const userId = req.userData.userId;
+    const contactId = req.params.contactId;
+
+    try {
+        const user = getUser(userId);
+        if (!user) {
+            return res.status(403).json({
+                message: "user not found",
+                success: false,
+            });
+        }
+
+        const updatedContact = await contactModel.findOneAndUpdate(
+            { contactId: contactId },
+            req.body
+        );
+        if (!updatedContact) {
+            return res.status(403).json({
+                message: "contact not found",
+                success: false,
+            });
+        }
+
+        return res.status(200).json({
+            message: "contact updated.",
+            success: true,
+        });
+    } catch (error) {
+        return res.status(412).send({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+
+module.exports = { allContacts, createContact, deleteContact, updateContact };
