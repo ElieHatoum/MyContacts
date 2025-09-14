@@ -6,8 +6,6 @@ const userModel = require("../models/user.model");
 
 const asyncHandler = require("express-async-handler");
 
-const { v4: uuidv4 } = require("uuid");
-
 const register = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -19,14 +17,10 @@ const register = asyncHandler(async (req, res) => {
                 message: "email already used",
             });
         } else {
-            //generating id
-            const userId = uuidv4();
-
             //hashing password
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const user = new userModel({
-                userId: userId,
                 email: email,
                 password: hashedPassword,
             });
@@ -74,7 +68,7 @@ const login = asyncHandler(async (req, res) => {
         let jwtToken = jwt.sign(
             {
                 email: getUser.email,
-                userId: getUser.userId,
+                userId: getUser.id,
             },
             process.env.JWT_SECRET,
             {
@@ -84,7 +78,7 @@ const login = asyncHandler(async (req, res) => {
         return res.status(200).json({
             accessToken: jwtToken,
             //keeping id to fetch contacts
-            userId: getUser.userId,
+            userId: getUser.id,
         });
     } catch (error) {
         return res.status(401).json({
