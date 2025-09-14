@@ -83,7 +83,10 @@ const deleteContact = asyncHandler(async (req, res) => {
             });
         }
 
-        const contact = await contactModel.findByIdAndDelete(contactId);
+        const contact = await contactModel.findOneAndDelete({
+            _id: contactId,
+            userId: userId,
+        });
 
         if (!contact) {
             return res.status(403).json({
@@ -117,8 +120,8 @@ const updateContact = asyncHandler(async (req, res) => {
             });
         }
 
-        const updatedContact = await contactModel.findByIdAndUpdate(
-            contactId,
+        const updatedContact = await contactModel.findOneAndUpdate(
+            { _id: contactId, userId: userId },
             req.body
         );
         if (!updatedContact) {
