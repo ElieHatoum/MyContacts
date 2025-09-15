@@ -1,44 +1,17 @@
-const jwt = require("jsonwebtoken");
-
-const bcrypt = require("bcryptjs");
-
-const userModel = require("../models/user.model");
-
 const asyncHandler = require("express-async-handler");
+const { registerUser, loginUser } = require("../services/auth.service");
 
 const register = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-
-    const verifyEmail = await userModel.findOne({ email: email });
-
     try {
-        if (verifyEmail) {
-            return res.status(409).json({
-                message: "Email already used",
-            });
-        } else {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const date = new Date();
-
-            const user = new userModel({
-                email: email,
-                password: hashedPassword,
-                createdAt: date,
-            });
-
-            const savedUser = await user.save();
-            return res.status(201).json({
-                success: true,
-                message: "User created",
-                user: {
-                    _id: savedUser.id,
-                    email: savedUser.email,
-                    createdAt: savedUser.createdAt,
-                },
-            });
-        }
-    } catch {
-        return res.status(500).send({
+        const { email, password } = req.body;
+        const user = await registerUser(email, password);
+        return res.status(201).json({
+            success: true,
+            message: "User created",
+            user: user,
+        });
+    } catch (error) {
+        return res.status(error.statusCode || 500).json({
             success: false,
             message: error.message,
         });
@@ -46,44 +19,12 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-
-    let getUser;
-
-    const userExists = await userModel.findOne({ email: email });
-
     try {
-        if (!userExists) {
-            return res.status(401).json({
-                message: "Authentication Failed",
-            });
-        }
-        getUser = userExists;
-        const passwordMatched = await bcrypt.compare(
-            password,
-            userExists.password
-        );
-
-        if (!passwordMatched) {
-            return res.status(401).json({
-                message: "Authentication Failed",
-            });
-        }
-        let jwtToken = jwt.sign(
-            {
-                email: getUser.email,
-                userId: getUser.id,
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "1h",
-            }
-        );
-        return res.status(200).json({
-            accessToken: jwtToken,
-        });
+        const { email, password } = req.body;
+        const verified = await loginUser(email, password);
+        return res.status(200).json(verified);
     } catch (error) {
-        return res.status(500).json({
+        return res.status(error.statusCode || 500).json({
             message: error.message,
             success: false,
         });
