@@ -19,10 +19,12 @@ const register = asyncHandler(async (req, res) => {
         } else {
             //hashing password
             const hashedPassword = await bcrypt.hash(password, 10);
+            const date = new Date();
 
             const user = new userModel({
                 email: email,
                 password: hashedPassword,
+                createdAt: date,
             });
 
             const savedUser = await user.save();
