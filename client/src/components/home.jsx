@@ -1,18 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import ContactList from "./contacts/contactList";
 
 function HomePage() {
-    const navigate = useNavigate();
-
-    function handleLogout() {
-        localStorage.removeItem("accessToken");
-        navigate("/login");
-    }
-
     return (
-        <Button variant="contained" onClick={handleLogout}>
-            LOGOUT
-        </Button>
+        <Box>
+            <ContactList />
+        </Box>
     );
 }
 

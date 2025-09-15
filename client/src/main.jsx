@@ -5,6 +5,8 @@ import HomePage from "./components/home.jsx";
 import LoginForm from "./components/login.jsx";
 import RegisterForm from "./components/register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import PublicRoute from "./publicRoute.jsx";
+import Bar from "./components/bar.jsx";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
@@ -18,12 +20,27 @@ createRoot(document.getElementById("root")).render(
                         </ProtectedRoute>
                     }
                 />
-                <Route path="/register" element={<RegisterForm />} />
-                <Route path="/login" element={<LoginForm />} />
+                <Route
+                    path="/register"
+                    element={
+                        <PublicRoute>
+                            <RegisterForm />
+                        </PublicRoute>
+                    }
+                />
+                <Route
+                    path="/login"
+                    element={
+                        <PublicRoute>
+                            <LoginForm />
+                        </PublicRoute>
+                    }
+                />
                 <Route
                     path="/home"
                     element={
                         <ProtectedRoute>
+                            <Bar />
                             <HomePage />
                         </ProtectedRoute>
                     }
