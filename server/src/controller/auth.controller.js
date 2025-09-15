@@ -13,11 +13,10 @@ const register = asyncHandler(async (req, res) => {
 
     try {
         if (verifyEmail) {
-            return res.status(403).json({
-                message: "email already used",
+            return res.status(409).json({
+                message: "Email already used",
             });
         } else {
-            //hashing password
             const hashedPassword = await bcrypt.hash(password, 10);
             const date = new Date();
 
@@ -29,13 +28,13 @@ const register = asyncHandler(async (req, res) => {
 
             const savedUser = await user.save();
             return res.status(201).json({
-                message: "user successfully created !",
-                result: savedUser,
                 success: true,
+                message: "User created",
+                user: savedUser,
             });
         }
     } catch {
-        return res.status(412).send({
+        return res.status(500).send({
             success: false,
             message: error.message,
         });
@@ -47,7 +46,6 @@ const login = asyncHandler(async (req, res) => {
 
     let getUser;
 
-    //verifying that the user with the email exists
     const userExists = await userModel.findOne({ email: email });
 
     try {
@@ -79,11 +77,9 @@ const login = asyncHandler(async (req, res) => {
         );
         return res.status(200).json({
             accessToken: jwtToken,
-            //keeping id to fetch contacts
-            userId: getUser.id,
         });
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: error.message,
             success: false,
         });
