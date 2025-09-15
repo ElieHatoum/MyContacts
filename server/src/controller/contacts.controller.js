@@ -75,6 +75,7 @@ const deleteContact = asyncHandler(async (req, res) => {
     const { userId } = req.userData;
     const contactId = req.params.contactId;
     try {
+        const user = await getUser(userId);
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -111,7 +112,7 @@ const updateContact = asyncHandler(async (req, res) => {
     const contactId = req.params.contactId;
 
     try {
-        const user = getUser(userId);
+        const user = await getUser(userId);
         if (!user) {
             return res.status(404).json({
                 success: false,

@@ -30,7 +30,11 @@ const register = asyncHandler(async (req, res) => {
             return res.status(201).json({
                 success: true,
                 message: "User created",
-                user: savedUser,
+                user: {
+                    _id: savedUser.id,
+                    email: savedUser.email,
+                    createdAt: savedUser.createdAt,
+                },
             });
         }
     } catch {

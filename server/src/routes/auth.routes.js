@@ -13,7 +13,7 @@ const { login, register } = require("../controller/auth.controller");
  * @swagger
  * tags:
  *   name: Auth
- *   description: Authentication and user management
+ *   description: User authentication and registration
  */
 
 /**
@@ -35,11 +35,11 @@ const { login, register } = require("../controller/auth.controller");
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "user@example.com"
+ *                 example: user@example.com
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "StrongPassword123!"
+ *                 example: StrongPassword123!
  *     responses:
  *       201:
  *         description: User successfully created
@@ -48,26 +48,44 @@ const { login, register } = require("../controller/auth.controller");
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                   example: user successfully created !
- *                 result:
- *                   type: object
  *                 success:
  *                   type: boolean
- *       403:
- *         description: Email already used
- *       412:
- *         description: Validation or database error
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User created
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 64f9f1c2e3f1b3f4c2a0b1d2
+ *                     email:
+ *                       type: string
+ *                       example: user@example.com
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *       409:
+ *         description: Email already in use
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Email already used
+ *       500:
+ *         description: Server error
  */
-
 router.post("/register", registerValidation, register);
 
 /**
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Authenticate a user and get a JWT token
+ *     summary: Login with email and password
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -82,14 +100,14 @@ router.post("/register", registerValidation, register);
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "user@example.com"
+ *                 example: user@example.com
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "StrongPassword123!"
+ *                 example: StrongPassword123!
  *     responses:
  *       200:
- *         description: Successful login, returns token and userId
+ *         description: Successfully authenticated, returns access token
  *         content:
  *           application/json:
  *             schema:
@@ -97,14 +115,20 @@ router.post("/register", registerValidation, register);
  *               properties:
  *                 accessToken:
  *                   type: string
- *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
- *                 userId:
- *                   type: string
- *                   example: "b23a8c3c-27c5-4d54-bf79-b302ef6d30d7"
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       401:
- *         description: Authentication failed
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Authentication Failed
+ *       500:
+ *         description: Server error
  */
-
 router.post("/login", loginValidation, login);
 
 module.exports = router;
