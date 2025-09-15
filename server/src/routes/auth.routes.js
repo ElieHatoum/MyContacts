@@ -82,11 +82,11 @@ router.post("/register", registerValidation, register);
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "test3@test.com"
+ *                 example: "user@example.com"
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "123456"
+ *                 example: "StrongPassword123!"
  *     responses:
  *       200:
  *         description: Successful login, returns token and userId
