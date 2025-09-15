@@ -6,7 +6,6 @@ import LoginForm from "./components/login.jsx";
 import RegisterForm from "./components/register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./publicRoute.jsx";
-import Bar from "./components/bar.jsx";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
@@ -40,7 +39,6 @@ createRoot(document.getElementById("root")).render(
                     path="/home"
                     element={
                         <ProtectedRoute>
-                            <Bar />
                             <HomePage />
                         </ProtectedRoute>
                     }

@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -13,31 +11,23 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
-function ContactList() {
-    const [contacts, setContacts] = useState([]);
-    const getContacts = async () => {
+function ContactList({ contacts, onDeleteContact }) {
+    async function deleteContact(id) {
         try {
             const token = localStorage.getItem("accessToken");
-            const response = await axios.get(
-                "http://localhost:3000/api/contacts",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setContacts(response.data.data);
+            await axios.delete(`http://localhost:3000/api/contacts/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            onDeleteContact();
         } catch (error) {
             console.error(
-                "Error fetching contacts:",
+                "Error deleting contact:",
                 error.response?.data || error.message
             );
         }
-    };
-
-    useEffect(() => {
-        getContacts();
-    }, []);
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -50,10 +40,16 @@ function ContactList() {
                 <List>
                     {contacts.map((contact) => (
                         <ListItem
-                            key={contact.id}
+                            key={contact._id}
                             secondaryAction={
                                 <Box display="flex" gap={1}>
-                                    <IconButton edge="end" aria-label="delete">
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                        onClick={() => {
+                                            deleteContact(contact._id);
+                                        }}
+                                    >
                                         <DeleteIcon />
                                     </IconButton>
                                     <IconButton edge="end" aria-label="edit">
