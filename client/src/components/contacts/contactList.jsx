@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -8,24 +8,37 @@ import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-function generate(element) {
-    return [0, 1, 2].map((value) =>
-        React.cloneElement(element, {
-            key: value,
-        })
-    );
-}
-
-const Demo = styled("div")(({ theme }) => ({
-    backgroundColor: (theme.vars || theme).palette.background.paper,
-}));
+import axios from "axios";
 
 function ContactList() {
+    const [contacts, setContacts] = useState([]);
+    const getContacts = async () => {
+        try {
+            const token = localStorage.getItem("accessToken");
+            const response = await axios.get(
+                "http://localhost:3000/api/contacts",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setContacts(response.data.data);
+        } catch (error) {
+            console.error(
+                "Error fetching contacts:",
+                error.response?.data || error.message
+            );
+        }
+    };
+
+    useEffect(() => {
+        getContacts();
+    }, []);
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid
@@ -34,40 +47,33 @@ function ContactList() {
                     md: 6,
                 }}
             >
-                <Demo>
-                    <List>
-                        {generate(
-                            <ListItem
-                                secondaryAction={
-                                    <Box display="flex" gap={1}>
-                                        <IconButton
-                                            edge="end"
-                                            aria-label="delete"
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            edge="end"
-                                            aria-label="edit"
-                                        >
-                                            <EditIcon />
-                                        </IconButton>
-                                    </Box>
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <AccountCircleIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Single-line item"
-                                    secondary={"Secondary text"}
-                                />
-                            </ListItem>
-                        )}
-                    </List>
-                </Demo>
+                <List>
+                    {contacts.map((contact) => (
+                        <ListItem
+                            key={contact.id}
+                            secondaryAction={
+                                <Box display="flex" gap={1}>
+                                    <IconButton edge="end" aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    <IconButton edge="end" aria-label="edit">
+                                        <EditIcon />
+                                    </IconButton>
+                                </Box>
+                            }
+                        >
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <AccountCircleIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={`${contact.firstName} ${contact.lastName}`}
+                                secondary={contact.phoneNumber}
+                            />
+                        </ListItem>
+                    ))}
+                </List>
             </Grid>
         </Box>
     );
