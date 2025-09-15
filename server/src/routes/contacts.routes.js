@@ -29,11 +29,39 @@ const verifyToken = require("../middleware/auth.middleware");
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Successfully fetched all contacts
- *       403:
+ *         description: List of contacts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 64f9f1c2e3f1b3f4c2a0b1d2
+ *                       firstName:
+ *                         type: string
+ *                         example: John
+ *                       lastName:
+ *                         type: string
+ *                         example: Doe
+ *                       phoneNumber:
+ *                         type: string
+ *                         example: 1234567891012
+ *                       userId:
+ *                         type: string
+ *                         example: 64f9f1c2e3f1b3f4c2a0b1d2
+ *       404:
  *         description: User not found
- *       401:
- *         description: Unauthorized
+ *       500:
+ *         description: Server error
  */
 router.get("/contacts", verifyToken, getContacts);
 
@@ -58,13 +86,16 @@ router.get("/contacts", verifyToken, getContacts);
  *             properties:
  *               firstName:
  *                 type: string
+ *                 example: John
  *               lastName:
  *                 type: string
+ *                 example: Doe
  *               phoneNumber:
  *                 type: string
+ *                 example: 11121344667788
  *     responses:
  *       201:
- *         description: Contact successfully created
+ *         description: Contact created
  *       403:
  *         description: User not found
  *       412:
@@ -89,7 +120,7 @@ router.post("/contacts", verifyToken, createContact);
  *         description: Contact ID
  *     responses:
  *       200:
- *         description: Contact successfully deleted
+ *         description: Contact deleted
  *       403:
  *         description: User or contact not found
  *       412:
@@ -101,7 +132,7 @@ router.delete("/contacts/:contactId", verifyToken, deleteContact);
  * @swagger
  * /api/contacts/{contactId}:
  *   patch:
- *     summary: Update a contact by ID
+ *     summary: Update a contact information by ID
  *     tags: [Contacts]
  *     security:
  *       - bearerAuth: []
@@ -127,7 +158,7 @@ router.delete("/contacts/:contactId", verifyToken, deleteContact);
  *                 type: string
  *     responses:
  *       200:
- *         description: Contact successfully updated
+ *         description: Contact updated
  *       403:
  *         description: User or contact not found
  *       412:
