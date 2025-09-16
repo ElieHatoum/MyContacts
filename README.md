@@ -66,7 +66,17 @@ MyContacts is a fullstack web application. It provides a secure authentication s
     JWT_SECRET=your_jwt_secret
     PORT=3000
     ```
+
 5. Run tests:
+
+    First, install Jest if you haven't already:
+
+    ```bash
+    npm install --save-dev jest
+    ```
+
+    Then run the tests:
+
     ```bash
     npm test
     ```
