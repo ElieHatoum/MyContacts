@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import ContactList from "./contacts/contactList";
+import ContactList from "./contactList";
 import Bar from "./bar";
 import { useState, useEffect } from "react";
 import axios from "axios";
