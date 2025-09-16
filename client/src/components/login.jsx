@@ -49,47 +49,42 @@ function LoginForm() {
     }
 
     return (
-        <div className="container">
-            <form onSubmit={handleLogin}>
-                <h2 style={{ textAlign: "center" }}>Login to your account</h2>
+        <form onSubmit={handleLogin}>
+            <h2 style={{ textAlign: "center" }}>Login to your account</h2>
 
-                <Stack
-                    spacing={2}
-                    sx={{ width: "300px", margin: "0 auto", mt: 5 }}
-                >
-                    {errorMessage && (
-                        <Alert variant="outlined" severity="error">
-                            {errorMessage}
-                        </Alert>
-                    )}
-                    <TextField
-                        id="email"
-                        label="Email"
-                        variant="outlined"
-                        autoComplete="off"
-                        required
-                        type="email"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        id="password"
-                        label="Password"
-                        variant="outlined"
-                        required
-                        type="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <Button variant="contained" type="submit" fullWidth>
-                        LOGIN
-                    </Button>
-                </Stack>
+            <Stack spacing={2} sx={{ width: "300px", margin: "0 auto", mt: 5 }}>
+                {errorMessage && (
+                    <Alert variant="outlined" severity="error">
+                        {errorMessage}
+                    </Alert>
+                )}
+                <TextField
+                    id="email"
+                    label="Email"
+                    variant="outlined"
+                    autoComplete="off"
+                    required
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                    id="password"
+                    label="Password"
+                    variant="outlined"
+                    required
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button variant="contained" type="submit" fullWidth>
+                    LOGIN
+                </Button>
+            </Stack>
 
-                <p style={{ marginTop: "2", textAlign: "center" }}>
-                    Don't have an account?{" "}
-                    <Link to="/register">Create an new account</Link>
-                </p>
-            </form>
-        </div>
+            <p style={{ marginTop: "2", textAlign: "center" }}>
+                Don't have an account?{" "}
+                <Link to="/register">Create an new account</Link>
+            </p>
+        </form>
     );
 }
 

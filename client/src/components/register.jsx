@@ -46,47 +46,42 @@ function RegisterForm() {
     }
 
     return (
-        <div className="container" style={{ marginTop: "10vh" }}>
-            <form onSubmit={handleRegister}>
-                <h2 style={{ textAlign: "center" }}>Create a new account</h2>
+        <form onSubmit={handleRegister}>
+            <h2 style={{ textAlign: "center" }}>Create a new account</h2>
 
-                <Stack
-                    spacing={2}
-                    sx={{ width: "300px", margin: "0 auto", mt: 5 }}
-                >
-                    {errorMessage && (
-                        <Alert variant="outlined" severity="error">
-                            {errorMessage}
-                        </Alert>
-                    )}
-                    <TextField
-                        id="email"
-                        label="Email"
-                        variant="outlined"
-                        autoComplete="off"
-                        required
-                        type="email"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        id="password"
-                        label="Password"
-                        variant="outlined"
-                        required
-                        type="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <Button variant="contained" type="submit" fullWidth>
-                        SIGN UP
-                    </Button>
-                </Stack>
+            <Stack spacing={2} sx={{ width: "300px", margin: "0 auto", mt: 5 }}>
+                {errorMessage && (
+                    <Alert variant="outlined" severity="error">
+                        {errorMessage}
+                    </Alert>
+                )}
+                <TextField
+                    id="email"
+                    label="Email"
+                    variant="outlined"
+                    autoComplete="off"
+                    required
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                    id="password"
+                    label="Password"
+                    variant="outlined"
+                    required
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button variant="contained" type="submit" fullWidth>
+                    SIGN UP
+                </Button>
+            </Stack>
 
-                <p style={{ marginTop: "2", textAlign: "center" }}>
-                    Already have an account?{" "}
-                    <Link to="/login">Login to an existing account</Link>
-                </p>
-            </form>
-        </div>
+            <p style={{ marginTop: "2", textAlign: "center" }}>
+                Already have an account?{" "}
+                <Link to="/login">Login to an existing account</Link>
+            </p>
+        </form>
     );
 }
 
