@@ -3,9 +3,18 @@ import ContactList from "./contacts/contactList";
 import Bar from "./bar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ContactPopup from "./contactPopup";
 
 function HomePage() {
     const [contacts, setContacts] = useState([]);
+    const [popup, setPopup] = useState({
+        open: false,
+        editing: false,
+        contact: null,
+    });
+
+    const handleClose = () =>
+        setPopup({ open: false, editing: false, contact: null });
 
     async function getContacts() {
         try {
@@ -32,8 +41,26 @@ function HomePage() {
     }, []);
     return (
         <Box>
-            <Bar onCreateContact={getContacts} />
-            <ContactList contacts={contacts} onDeleteContact={getContacts} />
+            <Bar
+                onAddClick={() =>
+                    setPopup({ open: true, editing: false, contact: null })
+                }
+            />
+            <ContactList
+                contacts={contacts}
+                onDeleteContact={getContacts}
+                onUpdateContact={getContacts}
+                onEditClick={(contact) =>
+                    setPopup({ open: true, editing: true, contact })
+                }
+            />
+            <ContactPopup
+                isOpen={popup.open}
+                isEditing={popup.editing}
+                contact={popup.contact}
+                handleClose={handleClose}
+                onChange={getContacts}
+            />
         </Box>
     );
 }

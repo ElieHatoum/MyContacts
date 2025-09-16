@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
-function ContactList({ contacts, onDeleteContact }) {
+function ContactList({ contacts, onDeleteContact, onEditClick }) {
     async function deleteContact(id) {
         try {
             const token = localStorage.getItem("accessToken");
@@ -52,7 +52,11 @@ function ContactList({ contacts, onDeleteContact }) {
                                     >
                                         <DeleteIcon />
                                     </IconButton>
-                                    <IconButton edge="end" aria-label="edit">
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="edit"
+                                        onClick={() => onEditClick(contact)}
+                                    >
                                         <EditIcon />
                                     </IconButton>
                                 </Box>

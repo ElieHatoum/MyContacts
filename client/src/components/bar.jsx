@@ -9,7 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -51,27 +50,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-function Bar({ onCreateContact }) {
+function Bar({ onAddClick }) {
     const navigate = useNavigate();
     function handleLogout() {
         localStorage.removeItem("accessToken");
         navigate("/login");
     }
-
-    const handleCreateContact = async () => {
-        const token = localStorage.getItem("accessToken");
-        await axios.post(
-            "http://localhost:3000/api/contacts",
-            {
-                firstName: "Marie",
-                lastName: "Bell",
-                phoneNumber: "12345678910",
-            },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        onCreateContact();
-    };
 
     return (
         <AppBar position="static">
@@ -97,11 +81,12 @@ function Bar({ onCreateContact }) {
                 <IconButton
                     size="large"
                     edge="end"
-                    onClick={handleCreateContact}
                     color="inherit"
+                    onClick={() => onAddClick()}
                 >
                     <AddIcon />
                 </IconButton>
+
                 <Box sx={{ flexGrow: 1 }} />
                 <IconButton
                     size="large"
