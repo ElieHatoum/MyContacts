@@ -1,4 +1,4 @@
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import ContactList from "./contacts/contactList";
 import Bar from "./bar";
 import { useState, useEffect } from "react";
@@ -40,7 +40,7 @@ function HomePage() {
         getContacts();
     }, []);
     return (
-        <Box>
+        <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
             <Bar
                 onAddClick={() =>
                     setPopup({ open: true, editing: false, contact: null })

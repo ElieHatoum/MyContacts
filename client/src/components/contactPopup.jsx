@@ -160,7 +160,15 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
                 resetFields();
             }}
         >
-            <Box sx={{ ...style, width: 400, height: 400, mt: 5 }}>
+            <Box
+                sx={{
+                    ...style,
+                    width: 400,
+                    height: 400,
+                    mt: 5,
+                    borderRadius: "20px",
+                }}
+            >
                 <form onSubmit={handleSubmit}>
                     <Stack spacing={2}>
                         <Typography variant="h6" component="h2" align="center">

@@ -58,7 +58,12 @@ function Bar({ onAddClick }) {
     }
 
     return (
-        <AppBar position="static">
+        <AppBar
+            position="sticky"
+            sx={{
+                borderRadius: "20px",
+            }}
+        >
             <Toolbar>
                 <Typography
                     variant="h6"

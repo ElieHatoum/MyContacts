@@ -30,7 +30,7 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
             <Grid
                 size={{
                     xs: 12,
@@ -40,6 +40,11 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
                 <List>
                     {contacts.map((contact) => (
                         <ListItem
+                            sx={{
+                                border: "1px solid #000",
+                                borderRadius: "20px",
+                                margin: "5px",
+                            }}
                             key={contact._id}
                             secondaryAction={
                                 <Box display="flex" gap={1}>
