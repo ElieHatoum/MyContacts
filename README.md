@@ -1,10 +1,6 @@
 # MyContacts
 
-Full Stack Project - EFREI M1
-
-# Project Name
-
-Brief description of what your project does and its main purpose.
+MyContacts is a fullstack web application. It provides a secure authentication system and a user-friendly interface to manage personal contacts. The project demonstrates a complete end-to-end stack (React + Vite frontend, Node.js + Express backend, MongoDB database).
 
 ## Table of Contents
 
