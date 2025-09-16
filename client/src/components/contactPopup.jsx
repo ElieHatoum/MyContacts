@@ -121,64 +121,61 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
     return (
         <Modal open={isOpen} onClose={handleClose}>
             <Box sx={{ ...style, width: 200, height: 300, mt: 5 }}>
-                <Stack spacing={1}>
-                    <Typography variant="h6" component="h2" align="center">
-                        {title}
-                    </Typography>
-                    <TextField
-                        id="firstName"
-                        label="First Name"
-                        variant="outlined"
-                        autoComplete="off"
-                        required
-                        type="string"
-                        value={newContact.firstName}
-                        onChange={(e) =>
-                            setNewContact({
-                                ...newContact,
-                                firstName: e.target.value,
-                            })
-                        }
-                    />
-                    <TextField
-                        id="lastName"
-                        label="Last Name"
-                        variant="outlined"
-                        autoComplete="off"
-                        required
-                        type="string"
-                        value={newContact.lastName}
-                        onChange={(e) =>
-                            setNewContact({
-                                ...newContact,
-                                lastName: e.target.value,
-                            })
-                        }
-                    />
-                    <TextField
-                        id="phoneNumber"
-                        label="Phone Number"
-                        variant="outlined"
-                        autoComplete="off"
-                        required
-                        type="string"
-                        value={newContact.phoneNumber}
-                        onChange={(e) =>
-                            setNewContact({
-                                ...newContact,
-                                phoneNumber: e.target.value,
-                            })
-                        }
-                    />
-                    <Button
-                        onClick={handleSubmit}
-                        variant="contained"
-                        type="submit"
-                        fullWidth
-                    >
-                        SUBMIT
-                    </Button>
-                </Stack>
+                <form onSubmit={handleSubmit}>
+                    <Stack spacing={1}>
+                        <Typography variant="h6" component="h2" align="center">
+                            {title}
+                        </Typography>
+                        <TextField
+                            id="firstName"
+                            label="First Name"
+                            variant="outlined"
+                            autoComplete="off"
+                            required
+                            type="string"
+                            value={newContact.firstName}
+                            onChange={(e) =>
+                                setNewContact({
+                                    ...newContact,
+                                    firstName: e.target.value,
+                                })
+                            }
+                        />
+                        <TextField
+                            id="lastName"
+                            label="Last Name"
+                            variant="outlined"
+                            autoComplete="off"
+                            required
+                            type="string"
+                            value={newContact.lastName}
+                            onChange={(e) =>
+                                setNewContact({
+                                    ...newContact,
+                                    lastName: e.target.value,
+                                })
+                            }
+                        />
+                        <TextField
+                            id="phoneNumber"
+                            label="Phone Number"
+                            variant="outlined"
+                            autoComplete="off"
+                            required
+                            type="string"
+                            value={newContact.phoneNumber}
+                            onChange={(e) =>
+                                setNewContact({
+                                    ...newContact,
+                                    phoneNumber: e.target.value,
+                                })
+                            }
+                        />
+                        <Button variant="contained" type="submit" fullWidth>
+                            SUBMIT
+                        </Button>
+                    </Stack>
+                </form>
             </Box>
         </Modal>
     );
