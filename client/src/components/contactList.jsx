@@ -34,12 +34,7 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
 
     return (
         <Box>
-            <Grid
-                size={{
-                    xs: 12,
-                    md: 6,
-                }}
-            >
+            <Grid>
                 <List>
                     {contacts.map((contact) => (
                         <ListItem
@@ -50,10 +45,8 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
                             }}
                             key={contact._id}
                             secondaryAction={
-                                <Box display="flex" gap={1}>
+                                <Box display="flex" gap={1.5}>
                                     <IconButton
-                                        edge="end"
-                                        aria-label="delete"
                                         onClick={() => {
                                             deleteContact(contact._id);
                                         }}
@@ -61,8 +54,6 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
                                         <DeleteIcon />
                                     </IconButton>
                                     <IconButton
-                                        edge="end"
-                                        aria-label="edit"
                                         onClick={() => onEditClick(contact)}
                                     >
                                         <EditIcon />

@@ -10,6 +10,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 
+//Pour la recherche
+//Exemple de la doc de Material UI et puis instrumenter au besoin
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -65,14 +67,7 @@ function Bar({ onAddClick }) {
             }}
         >
             <Toolbar>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ display: { xs: "none", sm: "block" } }}
-                >
-                    Contacts
-                </Typography>
+                <Typography variant="h6">Contacts</Typography>
 
                 <Search>
                     <SearchIconWrapper>
@@ -93,6 +88,7 @@ function Bar({ onAddClick }) {
                 </IconButton>
 
                 <Box sx={{ flexGrow: 1 }} />
+
                 <IconButton
                     size="large"
                     edge="end"

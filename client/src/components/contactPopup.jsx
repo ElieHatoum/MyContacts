@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 
+//Exemple de la doc de Material UI et puis instrumenter au besoin
+//Pour que le popup soit bien visible
 const style = {
     position: "absolute",
     top: "50%",
@@ -151,8 +153,8 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
     };
 
     const handleCancel = () => {
-        resetFields();
         handleClose();
+        resetFields();
     };
 
     const title = isEditing ? "Edit contact" : "Add contact";

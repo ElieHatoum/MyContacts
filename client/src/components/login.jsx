@@ -49,7 +49,7 @@ function LoginForm() {
     }
 
     return (
-        <div className="container" style={{ marginTop: "10vh" }}>
+        <div className="container">
             <form onSubmit={handleLogin}>
                 <h2 style={{ textAlign: "center" }}>Login to your account</h2>
 
