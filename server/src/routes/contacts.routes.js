@@ -99,7 +99,9 @@ router.get("/contacts", verifyToken, getContacts);
  *       403:
  *         description: User not found
  *       412:
- *         description: Validation or server error
+ *         description: Validation error
+ *       500:
+ *         description: Server error
  */
 router.post("/contacts", verifyToken, createContact);
 
@@ -124,7 +126,9 @@ router.post("/contacts", verifyToken, createContact);
  *       403:
  *         description: User or contact not found
  *       412:
- *         description: Validation or server error
+ *         description: Validation error
+ *       500:
+ *         description: Server error
  */
 router.delete("/contacts/:contactId", verifyToken, deleteContact);
 
@@ -162,7 +166,9 @@ router.delete("/contacts/:contactId", verifyToken, deleteContact);
  *       403:
  *         description: User or contact not found
  *       412:
- *         description: Validation or server error
+ *         description: Validation error
+ *       500:
+ *         description: Server error
  */
 router.patch("/contacts/:contactId", verifyToken, updateContact);
 
