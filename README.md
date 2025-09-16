@@ -11,7 +11,6 @@ MyContacts is a fullstack web application. It provides a secure authentication s
 -   [Scripts](#scripts)
 -   [Endpoints](#endpoints)
 -   [Usage](#usage)
--   [License](#license)
 
 ## Structure
 
@@ -25,7 +24,7 @@ MyContacts is a fullstack web application. It provides a secure authentication s
 
 ### Prerequisites
 
--   Node.js (version 16.x or higher)
+-   Node.js
 -   npm
 
 ### Installation
@@ -67,8 +66,12 @@ MyContacts is a fullstack web application. It provides a secure authentication s
     JWT_SECRET=your_jwt_secret
     PORT=3000
     ```
+5. Run tests:
+    ```bash
+    npm test
+    ```
 
-5. Start the server:
+6. Start the server:
     ```bash
     node server.js
     ```
@@ -176,7 +179,3 @@ MyContacts is a fullstack web application. It provides a secure authentication s
     curl -X GET http://localhost:3000/api/contacts \
       -H "Authorization: Bearer YOUR_TOKEN_HERE"
     ```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
