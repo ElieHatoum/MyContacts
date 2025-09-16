@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -18,7 +17,7 @@ function RegisterForm() {
         try {
             const requestBody = { email, password };
             await axios.post(
-                "http://localhost:3000/api/auth/register",
+                "https://mycontacts-ojpo.onrender.com/api/auth/register",
                 requestBody
             );
             setErrorMessage("");

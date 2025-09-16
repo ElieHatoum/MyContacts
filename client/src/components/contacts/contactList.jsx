@@ -15,11 +15,14 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
     async function deleteContact(id) {
         try {
             const token = localStorage.getItem("accessToken");
-            await axios.delete(`http://localhost:3000/api/contacts/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            await axios.delete(
+                `https://mycontacts-ojpo.onrender.com/api/contacts/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
             onDeleteContact();
         } catch (error) {
             console.error(

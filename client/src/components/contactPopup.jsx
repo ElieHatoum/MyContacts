@@ -90,9 +90,13 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
     const handleCreateContact = async () => {
         const token = localStorage.getItem("accessToken");
         try {
-            await axios.post("http://localhost:3000/api/contacts", newContact, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            await axios.post(
+                "https://mycontacts-ojpo.onrender.com/api/contacts",
+                newContact,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             handleClose();
             resetFields();
             onChange();
@@ -115,7 +119,7 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
         const changes = getChanges();
         try {
             await axios.patch(
-                `http://localhost:3000/api/contacts/${contact._id}`,
+                `https://mycontacts-ojpo.onrender.com/api/contacts/${contact._id}`,
                 changes,
                 { headers: { Authorization: `Bearer ${token}` } }
             );

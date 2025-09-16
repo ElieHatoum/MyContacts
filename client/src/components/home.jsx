@@ -20,7 +20,7 @@ function HomePage() {
         try {
             const token = localStorage.getItem("accessToken");
             const response = await axios.get(
-                "http://localhost:3000/api/contacts",
+                "https://mycontacts-ojpo.onrender.com/api/contacts",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
