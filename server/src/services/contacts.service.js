@@ -72,7 +72,8 @@ const modifyContact = async (userId, contactId, update) => {
 
     const updatedContact = await contactModel.findOneAndUpdate(
         { _id: contactId, userId: userId },
-        update
+        update,
+        { runValidators: true }
     );
 
     if (!updatedContact) {
