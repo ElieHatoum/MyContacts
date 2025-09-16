@@ -1,11 +1,11 @@
-require("dotenv").config({ path: "./.env" });
+require("dotenv").config({ path: "./src/.env" });
 
 const express = require("express");
 const cors = require("cors");
-const { connectDB } = require("./config/db.config.js");
-const { specs, swaggerUi } = require("./config/swagger.config.js");
-const auth = require("./routes/auth.routes.js");
-const contacts = require("./routes/contacts.routes.js");
+const { connectDB } = require("./src/config/db.config.js");
+const { specs, swaggerUi } = require("./src/config/swagger.config.js");
+const auth = require("./src/routes/auth.routes.js");
+const contacts = require("./src/routes/contacts.routes.js");
 
 const app = express();
 const port = process.env.PORT || 3000;
