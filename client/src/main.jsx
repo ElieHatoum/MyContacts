@@ -5,7 +5,7 @@ import HomePage from "./components/home.jsx";
 import LoginForm from "./components/login.jsx";
 import RegisterForm from "./components/register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import PublicRoute from "./publicRoute.jsx";
+import PublicRoute from "./components/publicRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
