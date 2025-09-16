@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
 
 const style = {
     position: "absolute",
@@ -33,6 +34,8 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
         lastName: "",
         phoneNumber: "",
     });
+
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (isEditing) {
@@ -71,6 +74,7 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
             lastName: "",
             phoneNumber: "",
         });
+        setErrorMessage("");
     }
 
     function getChanges() {
@@ -85,26 +89,51 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
 
     const handleCreateContact = async () => {
         const token = localStorage.getItem("accessToken");
-        await axios.post("http://localhost:3000/api/contacts", newContact, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        handleClose();
-        resetFields();
-        onChange();
+        try {
+            await axios.post("http://localhost:3000/api/contacts", newContact, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            handleClose();
+            resetFields();
+            onChange();
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                let message = error.response.data.message;
+                setErrorMessage(message.split(":").pop().trim());
+            } else {
+                setErrorMessage("An unexpected error occurred");
+            }
+        }
     };
 
     const handleUpdateContact = async () => {
         const token = localStorage.getItem("accessToken");
         const changes = getChanges();
-        console.log(changes);
-        await axios.patch(
-            `http://localhost:3000/api/contacts/${contact._id}`,
-            changes,
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-        handleClose();
-        resetFields();
-        onChange();
+        try {
+            await axios.patch(
+                `http://localhost:3000/api/contacts/${contact._id}`,
+                changes,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            handleClose();
+            resetFields();
+            onChange();
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                let message = error.response.data.message;
+                setErrorMessage(message.split(":").pop().trim());
+            } else {
+                setErrorMessage("An unexpected error occurred");
+            }
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -117,15 +146,33 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
         }
     };
 
+    const handleCancel = () => {
+        resetFields();
+        handleClose();
+    };
+
     const title = isEditing ? "Edit contact" : "Add contact";
     return (
-        <Modal open={isOpen} onClose={handleClose}>
-            <Box sx={{ ...style, width: 200, height: 300, mt: 5 }}>
+        <Modal
+            open={isOpen}
+            onClose={() => {
+                handleClose();
+                resetFields();
+            }}
+        >
+            <Box sx={{ ...style, width: 400, height: 400, mt: 5 }}>
                 <form onSubmit={handleSubmit}>
-                    <Stack spacing={1}>
+                    <Stack spacing={2}>
                         <Typography variant="h6" component="h2" align="center">
                             {title}
                         </Typography>
+
+                        {errorMessage && (
+                            <Alert variant="outlined" severity="error">
+                                {errorMessage}
+                            </Alert>
+                        )}
+
                         <TextField
                             id="firstName"
                             label="First Name"
@@ -133,6 +180,7 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
                             autoComplete="off"
                             required
                             type="string"
+                            fullWidth
                             value={newContact.firstName}
                             onChange={(e) =>
                                 setNewContact({
@@ -148,6 +196,7 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
                             autoComplete="off"
                             required
                             type="string"
+                            fullWidth
                             value={newContact.lastName}
                             onChange={(e) =>
                                 setNewContact({
@@ -163,6 +212,7 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
                             autoComplete="off"
                             required
                             type="string"
+                            fullWidth
                             value={newContact.phoneNumber}
                             onChange={(e) =>
                                 setNewContact({
@@ -171,9 +221,24 @@ function ContactPopup({ isOpen, isEditing, contact, handleClose, onChange }) {
                                 })
                             }
                         />
-                        <Button variant="contained" type="submit" fullWidth>
-                            SUBMIT
-                        </Button>
+
+                        <Box display="flex" gap={2} justifyContent="flex-end">
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                sx={{ flex: 1 }}
+                            >
+                                SUBMIT
+                            </Button>
+                            <Button
+                                variant="contained"
+                                onClick={handleCancel}
+                                color="error"
+                                sx={{ flex: 1 }}
+                            >
+                                CANCEL
+                            </Button>
+                        </Box>
                     </Stack>
                 </form>
             </Box>

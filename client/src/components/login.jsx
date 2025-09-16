@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Swal from "sweetalert2";
+import Alert from "@mui/material/Alert";
 import axios from "axios";
 
 function LoginForm() {
@@ -11,6 +11,7 @@ function LoginForm() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     async function handleLogin(e) {
         e.preventDefault();
@@ -22,25 +23,28 @@ function LoginForm() {
             );
 
             localStorage.setItem("accessToken", response.data.accessToken);
+            setErrorMessage("");
             navigate("/home");
         } catch (error) {
-            console.log(error);
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                let errorMessage =
+                    error.response?.data?.message || "Something went wrong";
 
-            let errorMessage =
-                error.response?.data?.message || "Something went wrong";
+                const validationErrors = error.response?.data?.data?.errors;
+                if (validationErrors) {
+                    errorMessage = Object.values(validationErrors)
+                        .flat()
+                        .join(" ");
+                }
 
-            const validationErrors = error.response?.data?.data?.errors;
-            if (validationErrors) {
-                errorMessage = Object.values(validationErrors)
-                    .flat()
-                    .join("<br>");
+                setErrorMessage(errorMessage.split(":").pop().trim());
+            } else {
+                setErrorMessage("An unexpected error occurred");
             }
-
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                html: errorMessage,
-            });
         }
     }
 
@@ -53,6 +57,11 @@ function LoginForm() {
                     spacing={2}
                     sx={{ width: "300px", margin: "0 auto", mt: 5 }}
                 >
+                    {errorMessage && (
+                        <Alert variant="outlined" severity="error">
+                            {errorMessage}
+                        </Alert>
+                    )}
                     <TextField
                         id="email"
                         label="Email"

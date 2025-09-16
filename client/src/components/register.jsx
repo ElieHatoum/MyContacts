@@ -5,11 +5,13 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
 
 function RegisterForm() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     async function handleRegister(e) {
         e.preventDefault();
@@ -19,25 +21,28 @@ function RegisterForm() {
                 "http://localhost:3000/api/auth/register",
                 requestBody
             );
+            setErrorMessage("");
             navigate("/login");
         } catch (error) {
-            console.log(error);
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                let errorMessage =
+                    error.response?.data?.message || "Something went wrong";
 
-            let errorMessage =
-                error.response?.data?.message || "Something went wrong";
+                const validationErrors = error.response?.data?.data?.errors;
+                if (validationErrors) {
+                    errorMessage = Object.values(validationErrors)
+                        .flat()
+                        .join(" ");
+                }
 
-            const validationErrors = error.response?.data?.data?.errors;
-            if (validationErrors) {
-                errorMessage = Object.values(validationErrors)
-                    .flat()
-                    .join("<br>");
+                setErrorMessage(errorMessage.split(":").pop().trim());
+            } else {
+                setErrorMessage("An unexpected error occurred");
             }
-
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                html: errorMessage,
-            });
         }
     }
 
@@ -50,6 +55,11 @@ function RegisterForm() {
                     spacing={2}
                     sx={{ width: "300px", margin: "0 auto", mt: 5 }}
                 >
+                    {errorMessage && (
+                        <Alert variant="outlined" severity="error">
+                            {errorMessage}
+                        </Alert>
+                    )}
                     <TextField
                         id="email"
                         label="Email"
