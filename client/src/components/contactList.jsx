@@ -10,8 +10,12 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 function ContactList({ contacts, onDeleteContact, onEditClick }) {
+    const [errorMessage, setErrorMessage] = useState("");
+
     async function deleteContact(id) {
         try {
             const token = localStorage.getItem("accessToken");
@@ -29,6 +33,35 @@ function ContactList({ contacts, onDeleteContact, onEditClick }) {
                 "Error deleting contact:",
                 error.response?.data || error.message
             );
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                let errorMessage =
+                    error.response?.data?.message || "Something went wrong";
+
+                setErrorMessage(errorMessage.split(":").pop().trim());
+            } else {
+                setErrorMessage(
+                    "An unexpected error occured.\nCheck your internet connection"
+                );
+            }
+
+            let timerInterval;
+            Swal.fire({
+                title: `${errorMessage}`,
+                icon: "error",
+                timer: 2500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                didOpen: () => {
+                    timerInterval = setInterval(100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     }
 
