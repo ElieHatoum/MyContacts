@@ -10,6 +10,8 @@ MyContacts is a fullstack web application. It provides a secure authentication s
 -   [Frontend](#frontend-client)
 -   [Scripts](#scripts)
 -   [Endpoints](#endpoints)
+-   [Test Credentials](#test-credentials)
+-   [URLS](#urls)
 -   [Usage](#usage)
 
 ## Structure
@@ -152,18 +154,17 @@ MyContacts is a fullstack web application. It provides a secure authentication s
 }
 ```
 
-## Test Credentials (Identifiants Test)
-
-### Test Credentials
+## Test Credentials
 
 -   Email: `user@example.com`
 -   Password: `StrongPassword123!`
 
-### Testing URLs
+## URLs
 
 -   **Local Development (server):** `http://localhost:3000`
 -   **API Base URL:** `https://mycontacts-ojpo.onrender.com`
 -   **API Documentation:** `https://mycontacts-ojpo.onrender.com/api-docs/`
+-   **Frontend URL:** `https://dashing-lolly-3f5a37.netlify.app/`
 
 ## Usage
 
