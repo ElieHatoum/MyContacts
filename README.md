@@ -162,7 +162,8 @@ MyContacts is a fullstack web application. It provides a secure authentication s
 ### Testing URLs
 
 -   **Local Development (server):** `http://localhost:3000`
--   **API Documentation:** `http://localhost:3000/api-docs`
+-   **API Base URL:** `https://mycontacts-ojpo.onrender.com`
+-   **API Documentation:** `https://mycontacts-ojpo.onrender.com/api-docs/`
 
 ## Usage
 
